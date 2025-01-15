@@ -1,11 +1,12 @@
 "use client"
-import listing_image from "../../../public/assets/hr_1.jpg"
+//import listing_image from "../../../public/assets/hr_1.jpg"
+
 import React from 'react'
 import Card from "./Card"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { deleteReservation, getUserReservations } from "./service"
 import { toast } from "react-hot-toast"
-
+import listing_image from "../../../../public/assets/hr_1.jpg"
 const Reservations = () => {
 
   const queryClient = useQueryClient()
