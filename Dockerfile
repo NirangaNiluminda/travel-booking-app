@@ -8,10 +8,13 @@ RUN npm install
 
 # copy all files from the current directory to the container like src files
 COPY . .
+
 # Generate Prisma client
-RUN npx prisma generate
+RUN npx prisma generate --schema=./src/prisma/schema.prisma
+
+# Push database schema
+RUN npx prisma db push --schema=./src/prisma/schema.prisma
 
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
-#test123456
