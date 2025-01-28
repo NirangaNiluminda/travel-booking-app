@@ -8,6 +8,8 @@ RUN npm install
 
 # copy all files from the current directory to the container like src files
 COPY . .
+# Generate Prisma client
+RUN npx prisma generate
 
 EXPOSE 3000
 
