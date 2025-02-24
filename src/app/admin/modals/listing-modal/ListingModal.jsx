@@ -55,15 +55,7 @@ const ListingModal = ({
 
     useEffect(() => {
         reset({ ...listing })
-    }, [
-        listing?.name,
-        listing?.desc,
-        listing?.beds,
-        listing?.type,
-        listing?.hasFreeWifi,
-        listing?.location,
-        listing?.pricePerNight
-    ])
+    }, [listing, reset])
 
     const handleImage = (e) => {
         setImages(prev => {

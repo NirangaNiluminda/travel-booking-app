@@ -1,3 +1,4 @@
+// /src/app/admin/(pages)/users/page.jsx
 "use client"
 import React from 'react'
 import AdminLayout from '../../layout/AdminLayout'
@@ -8,13 +9,10 @@ import { getAllUsers } from '../../services/service'
 import { ClipLoader } from 'react-spinners'
 
 const Users = () => {
-
   const { data: allUsers, isPending } = useQuery({
     queryFn: getAllUsers,
     queryKey: ["admin", "users"]
   })
-
-  console.log(allUsers)
 
   if (isPending) return <ClipLoader />
 
@@ -27,7 +25,7 @@ const Users = () => {
         <div className="mt-2 h-2/3 w-[50vw]">
           <DataTable
             columns={columns}
-            data={allUsers}
+            data={allUsers || []} // Add fallback empty array
           />
         </div>
       </div>

@@ -46,7 +46,7 @@ const UserModal = ({
             username: user?.username,
             email: user?.email
         })
-    }, [user?.username, user?.email])
+    }, [user?.username, user?.email, reset])
 
     const onSubmit = (data) => {
         handleUpdateUser({ userId, data })

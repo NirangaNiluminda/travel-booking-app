@@ -19,6 +19,7 @@ export const columns = [
                         width="35"
                         height="35"
                         className="rounded-full object-cover"
+                        alt=""
                     />
                 </div>
             )
@@ -97,13 +98,13 @@ export const columns = [
     {
         accessorKey: "actions",
         header: "Actions",
-        cell: ({ row }) => {
-            const { chargeId, id: reservationId } = row.original
+        cell: function ActionsCell({ row }) {
+            const { chargeId, id: reservationId } = row.original;
 
             const {
                 handleDeleteReservation,
                 isPending
-            } = useReservationHook()
+            } = useReservationHook();
 
             return (
                 <>
@@ -114,7 +115,7 @@ export const columns = [
                         <FaTrash color={`${isPending ? "#bdb2b2" : "#f00"}`} />
                     </button>
                 </>
-            )
+            );
         }
     },
 ]

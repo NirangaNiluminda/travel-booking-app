@@ -9,30 +9,34 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { schema } from "./schema"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { getFilteredListings } from "./service"
-import Image from "next/image"
 import { toast } from 'react-hot-toast'
+import { Suspense } from 'react'
+import Image from 'next/image'
 
-const Catalog = () => {
+
+// Server Component for data fetching
+async function fetchListings({ city, min_price, max_price, type }) {
+  const cityData = optionLocations.find(location => location.value === city)
+  const { city_name, image } = cityData || { city_name: "Unknown City", image: "/default.jpg" }
+  // Fetch listings based on filter criteria
+  const listings = await getFilteredListings({ city, min_price, max_price, type })
+  return { listings, city_name, image }
+}
+
+// Client Component wrapped in Suspense
+const CatalogContent = ({ initialData }) => {
+ 
+  const { listings, city_name, image } = initialData
   const searchParams = useSearchParams()
+  const router = useRouter()
 
   const city = searchParams.get("city")
   const min_price = searchParams.get("min_price")
   const max_price = searchParams.get("max_price")
   const type = searchParams.get("type")
-  const router = useRouter()
-
-  const {
-    city: city_name,
-    value,
-    image
-  } = optionLocations.find(location => location.value === city)
-
-  console.log(city_name, value, image)
 
   const defaultValues = {
-    location: value,
+    location: city_name,
     min_price,
     max_price,
     type
@@ -41,50 +45,38 @@ const Catalog = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    formState: {
-      errors
-    }
+    formState: { errors }
   } = useForm({
     defaultValues,
     resolver: zodResolver(schema)
   })
 
-  const queryClient = useQueryClient()
-  const { data: listings, isPending } = useQuery({
-    queryFn: () => getFilteredListings(getValues()),
-    queryKey: ["listings"]
-  })
-
   useEffect(() => {
     if (errors) {
-      Object.keys(errors).map((key) => {
+      Object.keys(errors).forEach((key) => {
         toast.error(errors[key]?.message)
       })
     }
   }, [errors])
 
   const onSubmit = async (data) => {
-    await getFilteredListings(data)
-
-    queryClient.invalidateQueries(["listings"])
-
     const newUrl = `/catalog?city=${data.location}&min_price=${data.min_price}&max_price=${data.max_price}&type=${data.type}`
-
     router.push(newUrl, { scroll: false })
   }
-
 
   return (
     <div className="min-h-screen w-full">
       <div className="relative h-3/5 w-full">
-        <Image
-          src={image}
-          className="brightness-50 h-screen w-full object-cover"
-        />
-        <h3
-          className="absolute text-6xl capitalize font-semibold flex items-center justify-center bottom-0 left-0 right-0 top-0 text-white"
-        >
+        <div className="relative h-screen w-full">
+          <Image
+            src={image}
+            alt={`${city_name} view`}
+            fill
+            priority
+            className="brightness-50 object-cover"
+          />
+        </div>
+        <h3 className="absolute text-6xl capitalize font-semibold flex items-center justify-center bottom-0 left-0 right-0 top-0 text-white">
           {city_name}
         </h3>
       </div>
@@ -130,7 +122,6 @@ const Catalog = () => {
             />
           </div>
           <Button
-            disabled={isPending}
             label="Search"
             className="mt-6 px-6 py-2 text-[20px] bg-white text-blue-600 rounded-xl transition-all hover:bg-[#efefef]"
           />
@@ -148,4 +139,14 @@ const Catalog = () => {
   )
 }
 
-export default Catalog
+// Main Page Component
+export default async function CatalogPage({ searchParams }) {
+  const { city, min_price, max_price, type } = searchParams
+  const data = await fetchListings({ city, min_price, max_price, type })
+  
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CatalogContent initialData={data} />
+    </Suspense>
+  )
+}
