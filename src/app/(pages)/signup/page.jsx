@@ -1,5 +1,6 @@
 "use client"
 import Image from 'next/image'
+import Link from 'next/link'
 import Dubai from "../../../../public/assets/dubai.jpg"
 import React from 'react'
 import Input from '@/ui/Input'
@@ -51,7 +52,7 @@ const SignUp = () => {
           alt=""
         />
         <div
-          className="h-[450px] w-[400px] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg"
+          className="h-[500px] w-[400px] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg"
         >
           <h2 className="text-center p-4 font-semibold text-slate-800 text-2xl border-b border-slate-500">
             Create an account
@@ -80,6 +81,15 @@ const SignUp = () => {
               label="Submit"
             />
           </form>
+          
+          <div className="text-center mt-6">
+            <p className="text-slate-600">
+              Already have an account?{" "}
+              <Link href="/login" className="text-blue-500 hover:underline font-medium">
+                Log in
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

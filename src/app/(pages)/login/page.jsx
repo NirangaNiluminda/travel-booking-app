@@ -5,8 +5,8 @@ import { signIn } from "next-auth/react"
 import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useState } from 'react'
-
 
 import Paris from '../../../../public/assets/paris.jpg'
 
@@ -58,7 +58,7 @@ const Login = () => {
           alt="Login's image"
         />
         <div
-          className="h-[350px] w-[350px] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg"
+          className="h-[400px] w-[350px] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg"
         >
           <h2 className="text-center p-4 font-semibold text-slate-800 text-2xl border-b border-slate-500">
             Log into your account
@@ -82,6 +82,15 @@ const Login = () => {
               className="w-3/4 mx-auto mt-12 cursor-pointer rounded-lg py-2 px-6 text-xl text-white bg-blue-500 transition-all hover:bg-blue-600"
             />
           </form>
+          
+          <div className="text-center mt-6">
+            <p className="text-slate-600">
+              Don't have an account?{" "}
+              <Link href="/signup" className="text-blue-500 hover:underline font-medium">
+                Sign up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
