@@ -15,6 +15,9 @@ RUN npx prisma generate --schema=./src/prisma/schema.prisma
 # Push database schema
 RUN npx prisma db push --schema=./src/prisma/schema.prisma
 
+# Build the application - ADD THIS LINE
+RUN npm run build
+
 EXPOSE 3000
 
 CMD ["npm", "run", "start"]
