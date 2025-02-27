@@ -13,9 +13,13 @@ import { getBestHotels } from './service'
 import { ClipLoader } from 'react-spinners'
 
 const BestHotels = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["listings"],
-    queryFn: getBestHotels
+    queryFn: getBestHotels,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0, // Consider data stale immediately
+    cacheTime: 1000 * 60, // Cache for 1 minute only
   })
 
   if (isLoading) {
@@ -46,6 +50,12 @@ const BestHotels = () => {
         <h2 className="text-4xl text-slate-800 font-bold mt-6 mb-12">
           Best Hotels
         </h2>
+        <button 
+          onClick={() => refetch()} 
+          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        >
+          Refresh Hotels
+        </button>
         <div className="flex flex-wrap items-center gap-14">
           {data?.map((place) => (
             <Card
