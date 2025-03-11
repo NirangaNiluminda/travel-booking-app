@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export default async function middleware(req) {
     const token = await getToken({ req })
     const pathname = req.nextUrl.pathname
-    const urlOrigin = "http://3.25.181.121:3000/"
+    const urlOrigin = "http://3.106.248.213:3000/"
 
     if (pathname.includes('/admin') && !token?.isAdmin) {
         return NextResponse.redirect(urlOrigin)
