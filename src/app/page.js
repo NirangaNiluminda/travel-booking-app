@@ -10,7 +10,7 @@ export default function Home() {
       <Hero
         image={sea}
         mainHeader="Are you ready for an adventure?"
-        secondaryHeader="Browse through the popular NIranga1."
+        secondaryHeader="Browse through the popular Galle"
       />
       <PopularLocations />
       <Hero
